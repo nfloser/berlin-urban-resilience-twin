@@ -76,3 +76,19 @@ def test_network_segments_expose_active_disruption_state() -> None:
         if feature["properties"]["segment_id"] == "BC"
     )
     assert bc["properties"]["affected"] is True
+
+
+def test_semantic_impact_uses_linked_graph_relationships() -> None:
+    api = client()
+    scenario = {
+        "id": "semantic-closure",
+        "name": "Semantic closure",
+        "disruptions": [
+            {"id": "d-sem", "kind": "road_closure", "affected_segment_ids": ["BC"]}
+        ],
+    }
+    api.post("/scenario", json=scenario).raise_for_status()
+    impact = api.get("/analysis/semantic-impact")
+    assert impact.status_code == 200
+    linked = impact.json()["facilities_connected_through_disrupted_segments"]
+    assert any("demo-hospital-c" in item["facility"] for item in linked)

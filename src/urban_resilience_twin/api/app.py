@@ -19,6 +19,10 @@ from urban_resilience_twin.domain.models import (
 from urban_resilience_twin.ingestion.weather import OpenMeteoWeatherClient
 from urban_resilience_twin.persistence.fuseki import FusekiClient
 from urban_resilience_twin.routing.router import RouteNotFoundError
+from urban_resilience_twin.semantic.queries import (
+    facilities_connected_through_disrupted_segments,
+    hospitals_in_affected_districts,
+)
 from urban_resilience_twin.semantic.validation import validate_graph
 
 from .runtime import load_service_from_environment
@@ -60,6 +64,7 @@ def create_app(service: TwinService | None = None) -> FastAPI:
         lifespan=lifespan,
     )
     if service is not None:
+        # Keep dependency-injected test apps usable without requiring TestClient lifespan context.
         app.state.twin = service
         app.state.weather = OpenMeteoWeatherClient()
         app.state.fuseki = None
@@ -244,6 +249,21 @@ def create_app(service: TwinService | None = None) -> FastAPI:
             Coordinate(latitude, longitude), threshold_minutes * 60.0, None
         )
         return list(metrics.unreachable_facility_ids)
+
+    @app.get("/analysis/semantic-impact")
+    def semantic_impact() -> dict:
+        twin: TwinService = app.state.twin
+        return {
+            "hospitals_in_affected_districts": hospitals_in_affected_districts(
+                twin.semantic_graph
+            ),
+            "facilities_connected_through_disrupted_segments": [
+                {"facility": facility, "segment": segment}
+                for facility, segment in facilities_connected_through_disrupted_segments(
+                    twin.semantic_graph
+                )
+            ],
+        }
 
     @app.get("/provenance")
     def provenance() -> dict:

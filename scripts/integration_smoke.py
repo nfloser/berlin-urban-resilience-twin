@@ -43,8 +43,29 @@ def main() -> None:
     response.raise_for_status()
     disrupted = httpx.post(f"{BASE_URL}/route", json=route_request, timeout=10).json()
     assert disrupted["segment_ids"] == ["AD", "DC"]
+    semantic_impact = httpx.get(f"{BASE_URL}/analysis/semantic-impact", timeout=10).json()
+    assert any(
+        "demo-hospital-c" in item["facility"]
+        for item in semantic_impact["facilities_connected_through_disrupted_segments"]
+    )
+
     provenance = httpx.get(f"{BASE_URL}/provenance", timeout=10).json()
     assert provenance["triple_count"] > 0
+
+    fuseki_query = """
+    PREFIX prov: <http://www.w3.org/ns/prov#>
+    SELECT ?result ?agent WHERE {
+      GRAPH ?graph { ?result prov:wasGeneratedBy ?agent . }
+    } LIMIT 1
+    """
+    fuseki = httpx.get(
+        "http://localhost:3030/resilience/sparql",
+        params={"query": fuseki_query},
+        headers={"accept": "application/sparql-results+json"},
+        timeout=10,
+    )
+    fuseki.raise_for_status()
+    assert fuseki.json()["results"]["bindings"]
     print("full-stack integration smoke test passed")
 
 
