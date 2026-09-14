@@ -1,0 +1,23 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix urt: <https://example.org/berlin-resilience/> .
+@prefix wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+urt:RoadSegmentShape a sh:NodeShape ;
+  sh:targetClass urt:RoadSegment ;
+  sh:property [ sh:path urt:connectsFrom ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path urt:connectsTo ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path urt:lengthMeters ; sh:minCount 1 ; sh:datatype xsd:double ] .
+
+urt:CriticalFacilityShape a sh:NodeShape ;
+  sh:targetClass urt:CriticalFacility ;
+  sh:property [ sh:path urt:connectedTo ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path urt:locatedIn ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path wgs84:lat ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path wgs84:long ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+urt:DisruptionShape a sh:NodeShape ;
+  sh:targetClass urt:Disruption ;
+  sh:property [ sh:path urt:disruptionKind ; sh:minCount 1 ] ;
+  sh:property [ sh:path urt:startsAt ; sh:minCount 1 ] ;
+  sh:property [ sh:path urt:affects ; sh:minCount 1 ] .
