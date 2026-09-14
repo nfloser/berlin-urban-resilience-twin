@@ -10,7 +10,8 @@ CriticalFacility --connectedTo--> RoadNode
 RoadSegment --connectsFrom--> RoadNode
 RoadSegment --connectsTo--> RoadNode
 Disruption --affects--> RoadSegment | District
-Scenario --includesDisruption--> Disruption
+RouteResult --originNode/destinationNode--> RoadNode
+RouteResult --routeMode--> routing objective
 AnalysisResult --prov:wasDerivedFrom--> source/scenario
 AnalysisResult --prov:wasGeneratedBy--> SoftwareAgent
 ```
@@ -23,6 +24,10 @@ Before publication to Fuseki:
 
 - road segments require exactly one start and end node and a numeric length,
 - critical facilities require network connection, administrative area and coordinates,
-- disruptions require kind, timestamp and at least one affected entity.
+- disruptions require kind, timestamp and at least one affected entity,
+- route results require origin, destination, routing mode, source provenance and generating agent,
+- accessibility results require source provenance and generating agent.
 
 The runtime refuses to publish a graph that fails these constraints.
+
+The API endpoint `GET /analysis/semantic-impact` executes the linked-domain SPARQL queries against the active semantic graph, so the knowledge graph participates directly in decision-support behaviour rather than acting as a decorative datastore.

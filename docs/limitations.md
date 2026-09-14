@@ -2,6 +2,7 @@
 
 - Road travel times are free-flow approximations and do not model live congestion.
 - Missing OSM `maxspeed` values use documented road-class fallback speeds.
+- Parallel OSM edges between the same directed node pair are collapsed to the fastest mapped edge in v1; turn restrictions and lane-level alternatives are not preserved.
 - OSM critical-infrastructure coverage can be incomplete or inconsistently tagged.
 - v1 routing is road-network based; it is not a complete multimodal VBB journey planner.
 - Open-Meteo weather observations are contextual and are not a validated road-closure model.

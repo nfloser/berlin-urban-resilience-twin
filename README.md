@@ -20,7 +20,7 @@ The project is intentionally more than a multi-layer map. It connects **real urb
 - Immutable scenario overlays for closures and penalties.
 - Fastest, disruption-avoiding, most-reliable and lowest-exposure route objectives.
 - Directly interpretable resilience metrics and single-segment sensitivity analysis.
-- RDF mappings, tested cross-domain SPARQL queries, PROV-O provenance and SHACL validation.
+- RDF mappings, application-level cross-domain SPARQL impact analysis, PROV-O provenance and SHACL validation.
 - Persistent Apache Jena Fuseki/TDB2 semantic state in Docker.
 - FastAPI decision-support API.
 - React + TypeScript + MapLibre full-screen map with scenario and route controls.
@@ -108,7 +108,6 @@ GET  /health
 GET  /ready
 GET  /facilities
 GET  /network/status
-GET  /network/segments
 GET  /data/freshness
 GET  /environment/weather
 GET  /disruptions
@@ -117,6 +116,7 @@ POST /route
 POST /analysis/accessibility
 GET  /analysis/critical-segments
 GET  /analysis/unreachable-facilities
+GET  /analysis/semantic-impact
 GET  /analysis/scenario-comparison
 GET  /provenance
 GET  /graph

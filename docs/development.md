@@ -16,7 +16,9 @@ uvicorn urban_resilience_twin.api.app:app --app-dir src --reload
 ```bash
 cd frontend
 npm install
+npm audit --audit-level=high
 npm test
+npm run build
 npm run dev
 ```
 
