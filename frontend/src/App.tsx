@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
-import maplibregl, { GeoJSONSource, Map } from 'maplibre-gl'
-import type { MapLayerMouseEvent, MapMouseEvent } from 'maplibre-gl'
+import * as maplibregl from 'maplibre-gl'
+import type { GeoJSONSource, Map, MapLayerMouseEvent, MapMouseEvent } from 'maplibre-gl'
 import type { FeatureCollection, LineString } from 'geojson'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { api } from './api'
