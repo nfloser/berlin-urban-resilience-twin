@@ -7,4 +7,4 @@ WORKDIR /fuseki
 EXPOSE 3030
 VOLUME ["/fuseki/databases"]
 HEALTHCHECK --interval=10s --timeout=4s --retries=20 CMD wget -q --spider http://localhost:3030/ || exit 1
-ENTRYPOINT ["java", "-jar", "/fuseki/fuseki.jar", "--tdb2", "--loc=/fuseki/databases/resilience", "--update", "/resilience"]
+ENTRYPOINT ["sh", "-c", "mkdir -p /fuseki/databases/resilience && exec java -jar /fuseki/fuseki.jar --tdb2 --loc=/fuseki/databases/resilience --update /resilience"]
