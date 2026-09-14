@@ -1,0 +1,8 @@
+services:
+  backend:
+    environment:
+      URT_NETWORK_JSON: /data/network.json
+      URT_FACILITIES_JSON: /data/facilities.json
+      URT_SOURCE_METADATA: /data/source-metadata.json
+    volumes:
+      - ./data/generated:/data:ro
