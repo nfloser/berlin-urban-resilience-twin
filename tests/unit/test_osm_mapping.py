@@ -13,3 +13,13 @@ def test_osm_mapping_converts_realistic_multidigraph_attributes() -> None:
     edge = mapped.graph.edges["1", "2"]
     assert edge["segment_id"].startswith("osm-way-123")
     assert edge["travel_time_s"] == 7.2
+
+
+def test_osm_mapping_preserves_one_way_direction() -> None:
+    graph = nx.MultiDiGraph()
+    graph.add_node(1, x=13.4, y=52.52)
+    graph.add_node(2, x=13.41, y=52.53)
+    graph.add_edge(1, 2, key=0, osmid=456, length=100.0, maxspeed="50", highway="primary")
+    mapped = OSMNetworkMapper().map_graph(graph)
+    assert mapped.graph.has_edge("1", "2")
+    assert not mapped.graph.has_edge("2", "1")

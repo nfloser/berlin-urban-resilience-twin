@@ -70,7 +70,7 @@ class OSMNetworkMapper:
                 travel_time_s=travel_time_s,
                 source_uri=f"https://www.openstreetmap.org/way/{osmid}" if osmid else None,
             )
-            pair = tuple(sorted((str(u), str(v))))
+            pair = (str(u), str(v))
             current = seen_pairs.get(pair)
             if current is None or travel_time_s < current[0]:
                 seen_pairs[pair] = (travel_time_s, segment)

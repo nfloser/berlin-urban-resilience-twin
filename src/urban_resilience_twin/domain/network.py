@@ -8,10 +8,10 @@ from .models import Coordinate, RoadNode, RoadSegment
 
 
 class TransportNetwork:
-    """Thin domain wrapper around an undirected NetworkX graph."""
+    """Thin domain wrapper around a directed NetworkX graph."""
 
     def __init__(self) -> None:
-        self.graph = nx.Graph()
+        self.graph = nx.DiGraph()
         self._segments: dict[str, tuple[str, str]] = {}
 
     def copy(self) -> "TransportNetwork":
