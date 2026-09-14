@@ -4,6 +4,7 @@ import os
 from contextlib import asynccontextmanager
 from dataclasses import asdict
 from pathlib import Path
+from typing import Annotated
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -220,7 +221,7 @@ def create_app(service: TwinService | None = None) -> FastAPI:
     def critical_segments(
         latitude: float = 52.52,
         longitude: float = 13.405,
-        candidate_segment_id: list[str] | None = Query(default=None),
+        candidate_segment_id: Annotated[list[str] | None, Query()] = None,
     ) -> list[dict]:
         twin: TwinService = app.state.twin
         try:

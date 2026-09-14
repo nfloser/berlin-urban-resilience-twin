@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from rdflib import Graph, Literal, RDF, URIRef
+from rdflib import RDF, Graph, Literal, URIRef
 from rdflib.namespace import PROV, XSD
 
 from urban_resilience_twin.domain.models import (
-    District,
     Disruption,
+    District,
     Facility,
     RoadNode,
     RoadSegment,

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from enum import StrEnum
 
 
@@ -74,7 +74,7 @@ class Disruption:
     affected_segment_ids: tuple[str, ...] = ()
     affected_district_ids: tuple[str, ...] = ()
     penalty_seconds: float = 0.0
-    starts_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    starts_at: datetime = field(default_factory=lambda: datetime.now(UTC))
     ends_at: datetime | None = None
     source_uri: str | None = None
 

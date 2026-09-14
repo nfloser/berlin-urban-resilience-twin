@@ -75,7 +75,7 @@ class Router:
         affected: list[str] = []
         segments: list[str] = []
         cost_fn = self._edge_cost(mode, preferences)
-        for u, v in zip(path, path[1:]):
+        for u, v in zip(path, path[1:], strict=False):
             data = derived.graph.edges[u, v]
             segments.append(str(data["segment_id"]))
             distance += float(data["length_m"])

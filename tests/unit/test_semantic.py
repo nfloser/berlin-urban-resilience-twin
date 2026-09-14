@@ -5,9 +5,9 @@ from rdflib import Graph
 
 from urban_resilience_twin.domain.models import (
     Coordinate,
-    District,
     Disruption,
     DisruptionKind,
+    District,
     Facility,
     FacilityType,
     RoadNode,
@@ -15,8 +15,8 @@ from urban_resilience_twin.domain.models import (
     Scenario,
 )
 from urban_resilience_twin.semantic.mapper import (
-    add_district,
     add_disruption,
+    add_district,
     add_facility,
     add_road_node,
     add_road_segment,

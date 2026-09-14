@@ -14,7 +14,7 @@ class TransportNetwork:
         self.graph = nx.DiGraph()
         self._segments: dict[str, tuple[str, str]] = {}
 
-    def copy(self) -> "TransportNetwork":
+    def copy(self) -> TransportNetwork:
         copied = TransportNetwork()
         copied.graph = self.graph.copy()
         copied._segments = self._segments.copy()

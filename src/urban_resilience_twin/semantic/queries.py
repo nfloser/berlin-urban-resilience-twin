@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from rdflib import Graph
 
-
 HOSPITALS_IN_AFFECTED_DISTRICTS = """
 PREFIX urt: <https://example.org/berlin-resilience/>
 SELECT DISTINCT ?facility WHERE {

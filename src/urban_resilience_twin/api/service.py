@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from uuid import uuid4
 
 from rdflib import Graph
@@ -47,7 +47,7 @@ class TwinService:
         self.scenarios: dict[str, Scenario] = {}
         self.active_scenario_id: str | None = None
         self.semantic_graph = Graph()
-        self.started_at = datetime.now(timezone.utc)
+        self.started_at = datetime.now(UTC)
         for district in districts:
             add_district(self.semantic_graph, district)
         for node_id, data in network.graph.nodes(data=True):
@@ -200,7 +200,7 @@ class TwinService:
                 else (baseline_edges - active_edges) / baseline_edges * 100.0
             ),
             "active_scenario_id": self.active_scenario_id,
-            "generated_at": datetime.now(timezone.utc).isoformat(),
+            "generated_at": datetime.now(UTC).isoformat(),
         }
 
     def provenance_summary(self) -> dict:
