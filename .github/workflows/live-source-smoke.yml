@@ -4,6 +4,12 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "17 5 * * 1"
+  push:
+    branches: [main]
+    paths:
+      - "src/urban_resilience_twin/ingestion/**"
+      - "scripts/live_source_smoke.py"
+      - ".github/workflows/live-source-smoke.yml"
 
 permissions:
   contents: read
@@ -13,8 +19,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
           cache: pip

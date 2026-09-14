@@ -49,3 +49,38 @@ def test_lowest_exposure_uses_explicit_user_weight() -> None:
         preferences=RoutePreferences(pollution_weight=100),
     )
     assert result.path_node_ids == ("A", "C")
+
+
+def test_most_reliable_uses_explicit_user_weight() -> None:
+    result = Router().route(
+        network(),
+        "A",
+        "C",
+        mode=RouteMode.MOST_RELIABLE,
+        preferences=RoutePreferences(reliability_weight=200),
+    )
+    assert result.path_node_ids == ("A", "C")
+
+
+def test_disruption_avoiding_penalises_affected_segment() -> None:
+    scenario = Scenario(
+        "penalty",
+        "Penalise BC",
+        (
+            Disruption(
+                "d1",
+                DisruptionKind.ROAD_PENALTY,
+                affected_segment_ids=("BC",),
+                penalty_seconds=50,
+            ),
+        ),
+    )
+    result = Router().route(
+        network(),
+        "A",
+        "C",
+        mode=RouteMode.DISRUPTION_AVOIDING,
+        preferences=RoutePreferences(disruption_weight=1),
+        scenario=scenario,
+    )
+    assert result.path_node_ids == ("A", "C")

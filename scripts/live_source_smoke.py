@@ -12,6 +12,13 @@ def check_osm() -> None:
     graph = ox.graph.graph_from_point((52.5200, 13.4050), dist=500, network_type="drive")
     if graph.number_of_nodes() < 2 or graph.number_of_edges() < 1:
         raise RuntimeError("OpenStreetMap smoke query returned no usable road network")
+    facilities = ox.features.features_from_point(
+        (52.5200, 13.4050),
+        tags={"amenity": ["hospital", "fire_station"]},
+        dist=5000,
+    )
+    if facilities.empty:
+        raise RuntimeError("OpenStreetMap smoke query returned no critical facilities in Berlin")
 
 
 async def check_weather() -> None:
