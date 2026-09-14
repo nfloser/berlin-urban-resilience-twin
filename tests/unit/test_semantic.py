@@ -1,7 +1,7 @@
 from pathlib import Path
 
 import pytest
-from rdflib import Graph
+from rdflib import RDF, Graph
 
 from urban_resilience_twin.domain.models import (
     Coordinate,
@@ -12,6 +12,7 @@ from urban_resilience_twin.domain.models import (
     FacilityType,
     RoadNode,
     RoadSegment,
+    RouteMode,
     Scenario,
 )
 from urban_resilience_twin.semantic.mapper import (
@@ -20,13 +21,17 @@ from urban_resilience_twin.semantic.mapper import (
     add_facility,
     add_road_node,
     add_road_segment,
+    add_route_provenance,
     add_scenario,
 )
+from urban_resilience_twin.semantic.namespaces import URT
 from urban_resilience_twin.semantic.queries import (
     facilities_connected_through_disrupted_segments,
     hospitals_in_affected_districts,
 )
 from urban_resilience_twin.semantic.validation import validate_graph
+
+SHAPES = Path(__file__).parents[2] / "src/urban_resilience_twin/semantic/shapes.ttl"
 
 
 def populated_graph() -> Graph:
@@ -59,9 +64,16 @@ def test_sparql_cross_domain_queries_require_linked_relationships() -> None:
 def test_shacl_accepts_valid_semantic_state() -> None:
     pytest.importorskip("pyshacl")
     graph = populated_graph()
-    shapes = Path(__file__).parents[2] / "src/urban_resilience_twin/semantic/shapes.ttl"
-    conforms, report = validate_graph(graph, shapes)
+    conforms, report = validate_graph(graph, SHAPES)
     assert conforms, report
+
+
+def test_shacl_rejects_route_without_required_contract() -> None:
+    pytest.importorskip("pyshacl")
+    graph = Graph()
+    graph.add((URT["analysis-result/broken"], RDF.type, URT.RouteResult))
+    conforms, _ = validate_graph(graph, SHAPES)
+    assert not conforms
 
 
 def test_scenario_links_to_its_disruptions() -> None:
@@ -81,3 +93,27 @@ def test_scenario_links_to_its_disruptions() -> None:
         )
     )
     assert len(pairs) == 1
+
+
+def test_route_result_provenance_satisfies_shacl() -> None:
+    pytest.importorskip("pyshacl")
+    graph = populated_graph()
+    add_scenario(
+        graph,
+        Scenario(
+            "closure",
+            "Road closure",
+            (Disruption("d1", DisruptionKind.ROAD_CLOSURE, ("AB",)),),
+        ),
+    )
+    result = add_route_provenance(
+        graph,
+        "r1",
+        ("road-network", "scenario:closure"),
+        "A",
+        "B",
+        RouteMode.FASTEST,
+    )
+    assert (result, None, URT["scenario/closure"]) in graph
+    conforms, report = validate_graph(graph, SHAPES)
+    assert conforms, report

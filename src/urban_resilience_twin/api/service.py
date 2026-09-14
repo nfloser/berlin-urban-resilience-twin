@@ -26,6 +26,7 @@ from urban_resilience_twin.semantic.mapper import (
     add_facility,
     add_road_node,
     add_road_segment,
+    add_route_provenance,
     add_scenario,
 )
 
@@ -105,8 +106,15 @@ class TwinService:
             scenario=scenario,
         )
         result_id = f"route-{uuid4()}"
-        source_ids = ("road-network",) + ((scenario.id,) if scenario else ())
-        add_analysis_provenance(self.semantic_graph, result_id, source_ids, "routing-agent")
+        source_ids = ("road-network",) + ((f"scenario:{scenario.id}",) if scenario else ())
+        add_route_provenance(
+            self.semantic_graph,
+            result_id,
+            source_ids,
+            origin_node,
+            destination_node,
+            mode,
+        )
         return result
 
     def geometry_for_path(self, path: tuple[str, ...]) -> list[list[float]]:
@@ -129,7 +137,7 @@ class TwinService:
         add_analysis_provenance(
             self.semantic_graph,
             f"accessibility-{uuid4()}",
-            ("road-network",) + ((scenario.id,) if scenario else ()),
+            ("road-network",) + ((f"scenario:{scenario.id}",) if scenario else ()),
             "accessibility-analysis-agent",
         )
         return result

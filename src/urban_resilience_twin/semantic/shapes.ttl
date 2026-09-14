@@ -2,6 +2,7 @@
 @prefix urt: <https://example.org/berlin-resilience/> .
 @prefix wgs84: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
 
 urt:RoadSegmentShape a sh:NodeShape ;
   sh:targetClass urt:RoadSegment ;
@@ -21,3 +22,16 @@ urt:DisruptionShape a sh:NodeShape ;
   sh:property [ sh:path urt:disruptionKind ; sh:minCount 1 ] ;
   sh:property [ sh:path urt:startsAt ; sh:minCount 1 ] ;
   sh:property [ sh:path urt:affects ; sh:minCount 1 ] .
+
+urt:RouteResultShape a sh:NodeShape ;
+  sh:targetClass urt:RouteResult ;
+  sh:property [ sh:path urt:originNode ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path urt:destinationNode ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path urt:routeMode ; sh:minCount 1 ; sh:maxCount 1 ] ;
+  sh:property [ sh:path prov:wasDerivedFrom ; sh:minCount 1 ] ;
+  sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ] .
+
+urt:AccessibilityResultShape a sh:NodeShape ;
+  sh:targetClass urt:AccessibilityResult ;
+  sh:property [ sh:path prov:wasDerivedFrom ; sh:minCount 1 ] ;
+  sh:property [ sh:path prov:wasGeneratedBy ; sh:minCount 1 ; sh:maxCount 1 ] .
