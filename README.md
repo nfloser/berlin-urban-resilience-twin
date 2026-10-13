@@ -1,8 +1,8 @@
 # Berlin Urban Resilience Twin
 
-A research-oriented semantic digital twin and decision-support system for analysing how urban disruptions change road accessibility to critical infrastructure in Berlin.
+Berlin Urban Resilience Twin studies how road disruptions affect access to critical facilities in Berlin. It combines a semantic city model with routing and accessibility analysis.
 
-The project is intentionally more than a multi-layer map. It connects **real urban entities → semantic relationships → road-network topology → scenario disruptions → graph algorithms → measurable accessibility change → explainable route/decision support → an interactive map**.
+The system links real urban entities and their semantic relationships to the road network. Scenario disruptions feed graph algorithms that measure changes in accessibility and expose routes and analysis results in an interactive map.
 
 ## Research questions
 
@@ -53,7 +53,7 @@ The project is intentionally more than a multi-layer map. It connects **real urb
 RDF state --SHACL gate--> Apache Jena Fuseki / TDB2
 ```
 
-The storage split is deliberate. NetworkX solves topology problems; Fuseki stores semantic identity, relationships and provenance. The knowledge graph is useful because application queries traverse those relationships instead of merely co-locating unrelated observations.
+NetworkX handles road topology and routing. Fuseki stores semantic identities, relationships and provenance, which application queries use to follow links between urban entities.
 
 ## Quick start: deterministic research fixture
 
