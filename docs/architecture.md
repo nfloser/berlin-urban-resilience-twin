@@ -2,7 +2,7 @@
 
 ## Goal
 
-The system separates semantic meaning, network computation, and geospatial source data instead of forcing every concern into one graph database.
+Network calculations, semantic relationships and geospatial source data use separate components instead of sharing one graph database.
 
 ```text
 OpenStreetMap / Open-Meteo
@@ -47,4 +47,4 @@ The runtime exposes its current `data_mode`.
 - `deterministic-fixture`: small synthetic network used for CI and local testing. It is never described as real Berlin data.
 - `osm-snapshot`: a normalized snapshot produced from real OpenStreetMap data by `scripts/ingest_osm.py`.
 
-This distinction prevents demo fixtures from being mistaken for production evidence.
+The exposed data mode lets clients distinguish test fixtures from real OSM snapshots.
